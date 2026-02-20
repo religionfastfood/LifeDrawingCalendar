@@ -1,11 +1,13 @@
 package com.example.lifedrawingcalendar.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -23,6 +25,14 @@ public class User {
     private String email;
 
     private String profilePicturePath;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Event> organizedEvents = new HashSet<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Event> modeledEvents = new HashSet<>();
 
     public Long getUserId() {
         return userId;
@@ -78,5 +88,13 @@ public class User {
 
     public void setProfilePicturePath(String profilePicturePath) {
         this.profilePicturePath = profilePicturePath;
+    }
+
+    public Set<Event> getOrganizedEvents() {
+        return organizedEvents;
+    }
+
+    public Set<Event> getModeledEvents() {
+        return modeledEvents;
     }
 }

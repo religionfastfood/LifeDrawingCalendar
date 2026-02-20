@@ -1,10 +1,9 @@
 package com.example.lifedrawingcalendar.repository;
 
-import com.example.lifedrawingcalendar.model.User;
+import com.example.lifedrawingcalendar.model.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-    User findUserByUserId(Long userId);
+public interface RoleRepository extends CrudRepository<Role, Long> {
 }
