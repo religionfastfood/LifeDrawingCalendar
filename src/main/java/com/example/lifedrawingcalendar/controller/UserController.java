@@ -1,7 +1,7 @@
 package com.example.lifedrawingcalendar.controller;
 
-import com.example.lifedrawingcalendar.dto.EventSummaryDTO;
-import com.example.lifedrawingcalendar.dto.UserDTO;
+import com.example.lifedrawingcalendar.dto.EventRecord;
+import com.example.lifedrawingcalendar.dto.UserRecord;
 import com.example.lifedrawingcalendar.model.User;
 import com.example.lifedrawingcalendar.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTO> addUser(@RequestParam String first, @RequestParam String last) {
+    public ResponseEntity<UserRecord> addUser(@RequestParam String first, @RequestParam String last) {
         User user = new User();
         user.setFirstName(first);
         user.setLastName(last);
         userRepository.save(user);
-        return ResponseEntity.ok(new UserDTO(
+        return ResponseEntity.ok(new UserRecord(
                 user.getUserId(),
                 user.getFirstName(),
                 null,
@@ -32,16 +32,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserByUserId(@PathVariable Long id) {
+    public ResponseEntity<UserRecord> getUserByUserId(@PathVariable Long id) {
         User user = userRepository.findById(id).orElseThrow();
-        return ResponseEntity.ok(new UserDTO(
+        return ResponseEntity.ok(new UserRecord(
                 user.getUserId(),
                 user.getFirstName(),
                 user.getOrganizedEvents().stream()
-                    .map(e -> new EventSummaryDTO(e.getEventId(), e.getEventName(), user.getUserId(), e.getModel().getUserId()))
+                    .map(e -> new EventRecord(e.getEventId(), e.getEventName(), e.getEventLocation(), e.getEventDate(), e.getOrganizer().getUserId(), e.getModel().getUserId()))
                     .toList(),
                 user.getModeledEvents().stream()
-                    .map(e -> new EventSummaryDTO(e.getEventId(), e.getEventName(), e.getOrganizer().getUserId(), user.getUserId()))
+                    .map(e -> new EventRecord(e.getEventId(), e.getEventName(), e.getEventLocation(), e.getEventDate(), e.getOrganizer().getUserId(), user.getUserId()))
                     .toList()
         ));
     }

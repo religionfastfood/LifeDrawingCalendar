@@ -1,37 +1,36 @@
 package com.example.lifedrawingcalendar.controller;
 
+import com.example.lifedrawingcalendar.dto.EventRecord;
 import com.example.lifedrawingcalendar.model.Event;
 import com.example.lifedrawingcalendar.model.User;
 import com.example.lifedrawingcalendar.repository.EventRepository;
 import com.example.lifedrawingcalendar.repository.UserRepository;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+import com.example.lifedrawingcalendar.service.EventService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
-@RestController
+@Controller
 @RequestMapping("/events")
 public class EventController {
 
-    private final EventRepository eventRepository;
-    private final UserRepository userRepository;
+    private final EventService eventService;
 
-    public EventController(EventRepository eventRepository, UserRepository userRepository) {
-        this.eventRepository = eventRepository;
-        this.userRepository = userRepository;
+    public EventController(EventService eventService, UserRepository userRepository) {
+        this.eventService = eventService;
     }
 
-    @GetMapping
-    public String listEvents(Model model) {
-        model.addAttribute("events", eventRepository.findAll());
-        return "events/list";
+    @GetMapping("")
+    public String list(Model model) {
+        model.addAttribute("events", eventService.list());
+        return "index";
     }
 
     @PostMapping("/create")
-    public String createEvent(@ModelAttribute EventForm form, Model model) {
-        Event newEvent = eventRepository.save()
+    public String save(@RequestBody EventRecord eventRecord, Model model) {
+        Event event = eventService.createEvent(eventRecord);
+        model.addAttribute("event", event);
+        return "new-event-row :: row";
     }
 
 }

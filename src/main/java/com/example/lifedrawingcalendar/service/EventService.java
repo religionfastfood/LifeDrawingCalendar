@@ -1,12 +1,13 @@
 package com.example.lifedrawingcalendar.service;
 
-import com.example.lifedrawingcalendar.form.EventForm;
+import com.example.lifedrawingcalendar.dto.EventRecord;
 import com.example.lifedrawingcalendar.model.Event;
 import com.example.lifedrawingcalendar.model.User;
 import com.example.lifedrawingcalendar.repository.EventRepository;
 import com.example.lifedrawingcalendar.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class EventService {
@@ -19,19 +20,23 @@ public class EventService {
         this.userRepository = userRepository;
     }
 
+    public Iterable<Event> list() {
+        return eventRepository.findAll();
+    }
+
     @Transactional
-    public Event createEvent(EventForm form) {
+    public Event createEvent(EventRecord eventRecord) {
 
         Event event = new Event();
-        event.setEventName(form.getEventName());
+        event.setEventName(eventRecord.eventName());
 
-        if (form.getOrganizerId() != null) {
-            User organizer = userRepository.getByUserId(form.getOrganizerId());
+        if (eventRecord.organizerId() != null) {
+            User organizer = userRepository.getByUserId(eventRecord.organizerId());
             event.setOrganizer(organizer);
         }
 
-        if (form.getModelId() != null) {
-            User model = userRepository.getByUserId(form.getModelId());
+        if (eventRecord.modelId() != null) {
+            User model = userRepository.getByUserId(eventRecord.modelId());
             event.setModel(model);
         }
 

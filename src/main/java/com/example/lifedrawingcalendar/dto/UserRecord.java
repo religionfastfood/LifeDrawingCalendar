@@ -2,9 +2,9 @@ package com.example.lifedrawingcalendar.dto;
 
 import java.util.List;
 
-public record UserDTO(
+public record UserRecord(
         Long id,
         String name,
-        List<EventSummaryDTO> organizedEvents,
-        List<EventSummaryDTO> modeledEvents
+        List<EventRecord> organizedEvents,
+        List<EventRecord> modeledEvents
 ) { }
