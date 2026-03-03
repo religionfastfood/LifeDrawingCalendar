@@ -2,21 +2,18 @@ package com.example.lifedrawingcalendar.controller;
 
 import com.example.lifedrawingcalendar.dto.EventRecord;
 import com.example.lifedrawingcalendar.model.Event;
-import com.example.lifedrawingcalendar.model.User;
-import com.example.lifedrawingcalendar.repository.EventRepository;
-import com.example.lifedrawingcalendar.repository.UserRepository;
 import com.example.lifedrawingcalendar.service.EventService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/events")
+@RequestMapping("")
 public class EventController {
 
     private final EventService eventService;
 
-    public EventController(EventService eventService, UserRepository userRepository) {
+    public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
@@ -30,7 +27,7 @@ public class EventController {
     public String save(@RequestBody EventRecord eventRecord, Model model) {
         Event event = eventService.createEvent(eventRecord);
         model.addAttribute("event", event);
-        return "new-event-row :: row";
+        return "event-row :: row";
     }
 
 }

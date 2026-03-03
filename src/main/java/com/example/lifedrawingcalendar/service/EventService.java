@@ -28,7 +28,9 @@ public class EventService {
     public Event createEvent(EventRecord eventRecord) {
 
         Event event = new Event();
-        event.setEventName(eventRecord.eventName());
+        event.setName(eventRecord.eventName());
+        event.setDate(eventRecord.eventDate());
+        event.setLocation(eventRecord.location());
 
         if (eventRecord.organizerId() != null) {
             User organizer = userRepository.getByUserId(eventRecord.organizerId());

@@ -16,13 +16,13 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long eventId;
+    private Long id;
 
-    private String eventName;
+    private String name;
 
-    private String eventLocation;
+    private String location;
 
-    private LocalDateTime eventDate;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "model_id")
